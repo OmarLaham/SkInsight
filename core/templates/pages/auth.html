@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n static socialaccount %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block content %}
+
+{% comment %} Redirects to accounts/login in views.auth_view {% endcomment %}
+
+
+{% endblock %}

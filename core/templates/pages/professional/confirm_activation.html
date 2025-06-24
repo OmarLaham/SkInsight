@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<h2 class="text-center text-xl font-semibold">{% block title %}{% trans "Activate Skincare Professional" %}{% endblock %}</h2>
+<p>{% trans "Are you sure you want to activate this professional? They will be visible again in the homepage listing." %}</p>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <button type="submit" class="btn btn-danger">{% trans "Yes, activate" %}</button>
+  <a href="{% url 'admin_view' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+</form>
+{% endblock %}

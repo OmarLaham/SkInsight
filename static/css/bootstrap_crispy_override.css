@@ -1,0 +1,17 @@
+:root {
+    --bs-primary: #ec4899;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: white;
+}
+.btn-primary:hover {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.text-primary {
+    color: var(--bs-primary);
+}

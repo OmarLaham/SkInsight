@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<h2 class="text-center text-xl font-semibold">{% block title %}{% trans "Populate Quiz As FHIR Resource" %}{% endblock %}</h2>
+<p>{% trans "Are you sure you want to poulate the quiz with title: {{ new_questionnaire_title }} as FHIR Questionnaire Resource?." %}</p>
+
+<form method="post">
+  {% csrf_token %}ID
+  {{ form|crispy }}
+  <button type="submit" class="btn btn-danger">{% trans "Yes, populate" %}</button>
+  <a href="{% url 'admin_view' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+</form>
+{% endblock %}

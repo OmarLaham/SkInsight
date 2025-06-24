@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block content %}
+  <div class="max-w-md mx-auto mt-10 p-6 bg-white shadow rounded">
+    <h1 class="text-xl font-bold mb-4">{{ _("Confirm Account") }}</h1>
+    <p class="mb-4">{{ _("Please confirm that you want to connect your Google account.") }}</p>
+
+    <form method="post" action="{% url 'socialaccount_signup' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded">
+        {{ _("Continue") }}
+      </button>
+    </form>
+  </div>
+{% endblock %}

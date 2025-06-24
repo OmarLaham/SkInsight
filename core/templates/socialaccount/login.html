@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block content %}
+<div class="max-w-xl mx-auto p-8 bg-white shadow rounded mt-12">
+  <h1 class="text-2xl font-bold mb-4">{% trans "Social Sign In" %}</h1>
+  <p class="mb-6">{% trans "You are about to sign in using a third-party account from Google." %}</p>
+
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      {% trans "Continue" %}
+    </button>
+  </form>
+</div>
+{% endblock %}

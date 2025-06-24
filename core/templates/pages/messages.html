@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block title %}
+{{ _("Messages") }}
+
+{% endblock %}
+
+{% block content %}
+
+<!-- Messaging Wrapper -->
+<div class="flex items-center justify-center p-4">
+    <!-- Whatsapp Redirect Panel -->
+    <div class="bg-white rounded-xl shadow-md w-full max-w-4xl mx-auto mt-5 space-y-8 p-8">
+        <h1 class="text-3xl font-semibold mb-6 text-center">{{ _("Contact Via Whatsapp") }}</h1>
+        <p class="text-gray-600 text-center mb-4">
+            <br />
+            <img src="{% static 'imgs/whatsapp_icon.png' %}" alt="WhatsApp icon" class="mx-auto" /> 
+            <br />
+            {{ _("To continue messaging via WhatsApp with") }} <b>({{receiver_whatsapp_number}})</b> {{ _(", please click the button bellow.") }}
+            <br /><br />
+            <a target="_self" href="https://wa.me/{{receiver_whatsapp_number}}" class="text-pink-500 hover:underline">
+                <button class="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg transition">
+                    {{ _("Start Messaging") }}
+                </button>
+            </a>
+        </p>
+
+{% comment %}
+<!-- Q/A Content Wrapper -->
+<div class="flex items-center justify-center p-4">
+    <!-- Q/A Panel -->
+    <div class="bg-white rounded-xl shadow-md w-full max-w-4xl mx-auto mt-5 space-y-8 p-8">
+        <h1 class="text-3xl font-semibold mb-6 text-center">إرسال استشارة</h1>
+        <!-- Part 1: Client Form -->
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3 {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %}" dir="{{layout.dir}}">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="المستخدم"
+                        class="w-14 h-14 rounded-full">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-800">أمل الرفاعي</h2>
+                        <p class="text-sm text-gray-500">2 / 3 أسئلة متبقية حتى التجديد</p>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="title" class="block mb-1 text-gray-700 font-medium">عنوان السؤال</label>
+                <input id="title" type="text" required
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500" />
+            </div>
+
+            <div>
+                <label for="body" class="block mb-1 text-gray-700 font-medium">نص السؤال</label>
+                <textarea id="body" rows="4" required
+                    class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-500"></textarea>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <label class="flex items-center space-x-2 cursor-pointer {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %}" dir="{{layout.dir}}">
+                    <input type="checkbox" required id="quick-response" class="toggle-checkbox hidden" />
+                    <div class="w-10 h-6 bg-gray-300 rounded-full shadow-inner relative transition">
+                        <div class="dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+                    </div>
+                    <span class="text-gray-700">يتطلب رد سريع</span>
+                </label>
+                <span class="text-sm font-bold text-pink-400">1 / 2 من الأسئلة السريعة المتبقية حتى التجديد</span>
+            </div>
+
+            <div>
+                <label for="photo" class="block mb-1 text-gray-700 font-medium">صورة مرفقة (اختياري)</label>
+                <input type="file" id="photo" class="w-full border border-gray-300 rounded-lg px-3 py-2" />
+            </div>
+
+            <button id="sendBtn" type="button"
+                class="bg-pink-500 hover:bg-pink-600 text-white font-semibold px-6 py-2 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed">
+                إرسال
+            </button>
+        </div>
+
+        <!-- Divider -->
+        <hr class="border-t border-gray-300" />
+
+        <!-- Part 2: Professional's Answer -->
+        <div class="space-y-4">
+            <div class="flex items-center space-x-3 {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %}" dir="{{layout.dir}}">
+                <img src="https://randomuser.me/api/portraits/men/33.jpg" alt="المتخصص" class="w-14 h-14 rounded-full">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800">د. عادل السالم</h2>
+                    <p class="text-sm text-gray-500">مركز إشراقة للبشرة - الوقت المتوقع للرد: ٢٤ ساعة</p>
+                </div>
+            </div>
+
+            <h3 class="text-md font-semibold text-gray-700">الإجابة:</h3>
+            <p class="text-gray-600" id="answerText">لم يتم الرد بعد.</p>
+        </div>
+    </div>
+    <!-- / Q/A Panel -->
+</div>
+{% endcomment %}
+
+<script src="{% static 'js/consultation.js' %}"></script>
+
+{% endblock %}

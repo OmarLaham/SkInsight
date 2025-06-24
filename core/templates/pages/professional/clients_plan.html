@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h2 class="text-center text-xl font-semibold">{% block title %}{% trans "Manage Professional Plan" %}{% endblock %}</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">{% trans "Save" %}</button>
+  </form>
+  {% comment %} redirect_url depends on the user (either admin -> admin_view, or professional -> professional dashboard) {% endcomment %}
+  <a href="{{ redirect_url }}" class="btn btn-secondary mt-3">{% trans "Cancel" %}</a>
+{% endblock %}

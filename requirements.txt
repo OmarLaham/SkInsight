@@ -1,0 +1,9 @@
+gunicorn==23.0.0
+Django>=4.2,<5.0
+django-crispy-forms==2.4.0
+crispy_bootstrap5==2025.6
+django-phonenumber-field[phonenumbers]
+django-allauth==65.9.0
+whitenoise==6.9.0
+requests==2.32.4
+azure-identity==1.23.0

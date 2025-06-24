@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block title %}
+اختبار جديد
+{% endblock %}
+
+{% block content %}
+
+<!-- Professional / Client Panel -->
+<div class="flex justify-center p-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-lg shadow-md w-full max-w-4xl">
+    <!-- Skincare Professional -->
+    <div class="flex items-center space-x-4">
+      <img src="{{ professional.photo.0.url }}" alt="{{ _('Skincare Professional') }}: {{ professional.name.0.prefix.0 }} {{ professional.name.0.given.0 }} {{ professional.name.0.family }}" class="w-20 h-20 rounded-full object-cover me-2" />
+      <div>
+        <h2 class="text-xl font-bold">
+          {{ professional.name.0.prefix.0 }} {{ professional.name.0.given.0 }} {{ professional.name.0.family }}
+        </h2>
+        <p class="text-gray-600">
+          {{ professional.address.0.text }} - {{ professional.address.0.city }}
+        </p>
+      </div>
+    </div>
+
+    <!-- User Info -->
+    <div class="flex items-center space-x-4 {% if LANGUAGE_CODE == 'ar' %} md:space-x-reverse {% endif %} {{ layout.text_align_cls }}">
+      <div>
+        <h2 class="text-xl font-bold">
+          {{ client.name.0.prefix.0 }} {{ client.name.0.given.0 }} {{ client.name.0.family }}
+        </h2>
+      </div>
+      <img src="{{ client.photo.0.url }}" alt="{{ _('Client') }}: {{ client.name.0.prefix.0 }} {{ client.name.0.given.0 }} {{ client.name.0.family }}" class="w-20 h-20 rounded-full object-cover" />
+    </div>
+  </div>
+</div>
+
+<!-- Quiz content wrapper (centered) -->
+<div class="flex items-center justify-center p-4">
+  <!-- your centered content here -->
+  
+  <!-- Quiz Panel -->
+  <div class="max-w-3xl w-full bg-white shadow-md rounded-lg p-8">    
+
+    <h1 class="text-3xl font-semibold mb-6 text-center">اختبار تتبع حالة الجلد</h1>
+    <!-- شريط التقدم -->
+    <div class="w-full bg-gray-300 rounded-full h-3 mb-6">
+      <div id="progressBar" class="bg-pink-400 h-3 rounded-full w-0"></div>
+    </div>
+
+    <form id="skinQuiz" method="post" class="space-y-6">
+      {% csrf_token %}
+      <!-- حاوية الأسئلة -->
+      <div id="questionsContainer"></div>
+
+      <!-- أزرار التنقل -->
+      <div class="flex justify-center space-x-4 mt-6">
+        <button type="button" id="prevBtn" class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded hover:bg-gray-400 disabled:opacity-50 me-2" disabled>
+          &rarr; السابق
+        </button>
+
+        <button type="button" id="nextBtn" class="bg-pink-300 text-white font-semibold py-2 px-4 rounded hover:bg-pink-500">
+          التالي &larr;
+        </button>
+      </div>
+
+      <button
+        type="submit"
+        id="submitBtn"
+        class="mt-6 w-full bg-pink-400 text-white font-semibold py-3 rounded hover:bg-pink-500 transition disabled:opacity-50"
+        disabled
+      >
+        إرسال
+      </button>
+    </form>
+
+    <div id="result" class="mt-8 p-4 bg-green-50 border border-green-300 rounded hidden"></div>
+    
+    <!-- Quiz Source -->
+    <div class="bg-gray-50 border border-black-200 rounded-xl p-4 mt-6 text-sm text-gray-800 space-y-3">
+      <!-- Arabic Version -->
+      <p class="font-semibold text-gray">مصادر هذا الاختبار:</p>
+      <p>
+        تم تصميم هذا الاختبار بالاعتماد على مؤشرات علمية من <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7089164/" target="_blank" class="text-pink-500 underline hover:text-pink-600">مؤشر نوع البشرة لباومان (BSTI)</a> لتقييم درجة الدهنية، والتحسس، والتصبغ، وعلامات التقدم في السن.  
+        كما استُخدم اختبار <a href="https://www.provenskincare.com/quiz/start" target="_blank" class="text-pink-500 underline hover:text-pink-600">جينوم البشرة من PROVEN</a> لتقييم التفاعل مع المنتجات، والتحسس، ومشاكل التصبغ.
+      </p>
+      <hr />
+      <!-- English Version -->
+      <p dir="ltr" class="font-semibold text-gray">Sources used for this quiz:</p>
+      <p dir="ltr">
+        This quiz is based on scientific indicators from the <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7089164/" target="_blank" class="text-pink-500 underline hover:text-pink-600">Baumann Skin Type Indicator (BSTI)</a> for assessing oiliness, sensitivity, pigmentation, and signs of aging.  
+        Additionally, insights from the <a href="https://www.provenskincare.com/quiz/start" target="_blank" class="text-pink-500 underline hover:text-pink-600">PROVEN Skin Genome Quiz</a> were used to evaluate product sensitivity, pigmentation, and skin reaction patterns.
+      </p>
+
+    </div>
+
+  </div>
+  
+</div>
+
+<!-- Use this to pass data to js script. json_script is important against attacks -->
+{{ quiz_questions_json|json_script:"quiz-questions-data" }}
+
+<script src="{% static 'js/quiz_start.js' %}"></script>
+{% endblock %}

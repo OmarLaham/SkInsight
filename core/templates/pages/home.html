@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block title %}
+{{ _("Homepage") }}
+{% endblock %}
+
+
+{% block content %}
+
+{% for professional in professionals %}
+
+<!-- Professionals Listing Panel -->
+<div class="bg-white rounded-xl shadow-md w-full max-w-4xl mx-auto mt-5 space-y-8 p-8" dir="{{ layout.dir }}">
+  <div class="grid grid-cols-[auto_1fr] gap-6 items-start">
+    <img src="{{ professional.photo_url}}" alt= "{{ _('Skincare Professional') }} {{ professional.title }} {{ professional.first_name }} {{ professional.last_name }}"
+      class="h-28 w-20 object-cover rounded-xl shadow-md" />
+
+    <div class="space-y-2 {{ layout.text_align_cls }}">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <h2 class="text-xl font-bold text-gray-800">
+          {{ professional.title }} {{ professional.first_name }} {{ professional.last_name }}
+          <span class="inline-block bg-pink-100 text-pink-600 text-xs font-semibold px-2 py-1 rounded ml-2">⭐
+            {{ _("Top Professional") }}</span>
+        </h2>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="flex text-yellow-400 text-lg">
+          {{ professional.rating }}
+        </div>
+        <span class="text-sm text-gray-500">({{ professional.n_reviews}} {{ _("Reviews")}} )</span>
+      </div>
+
+      <p class="text-sm text-gray-700">
+        {{ professional.organization_name }} - {{ professional.organization_city }}
+      </p>
+
+      <!-- <p class="text-sm text-gray-600">
+        short description..
+      </p> -->
+
+      <p class="text-sm text-gray-700" style="direction: ltr;">
+        📞 {{ professional.phone_number }}
+        <!-- <br />
+        📱 Mobile Number -->
+      </p>
+
+      <div class="mt-4 border-t pt-4">
+        <div class="grid grid-cols-[80%_1fr] text-sm text-gray-700">
+          <div>
+            <p>
+              <span class="font-bold">{{ _("Number of questions / month") }}</span>: {{ professional.clients_plan.n_monthly_questions }} - <span>⏱️ {{ _("Replies in") }}: </span> {{ professional.clients_plan.usually_replies_in }}
+            </p>
+
+            <p>
+              <span class="font-bold">{{ _("Number of emergency questions / month") }}</span>: {{ professional.clients_plan.n_monthly_flagged_questions }} - <span>❗ {{ _("Reply in less than 12 hours") }}</span>
+            </p>
+
+            <p>
+              <span class="font-bold">{{ _("Checkup Frequency") }}</span>: {{ professional.clients_plan.checkup_frequency }}
+            </p>
+            
+          </div>
+          <div class="text-2xl font-bold text-center">
+            {{ professional.clients_plan.monthly_price }} S.P.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% endfor %}
+ 
+{% endblock %}

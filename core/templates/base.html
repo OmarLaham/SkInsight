@@ -1,0 +1,156 @@
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" dir="{% if LANGUAGE_CODE == 'ar' %}{{ layout.dir }}{% else %}ltr{% endif %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SkInsight | {% block title %}{% endblock %}</title>
+
+    {% if requires_crispy %}
+      <!-- Bootstrap 5 CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+            rel="stylesheet"
+            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+            crossorigin="anonymous">
+
+
+      <!-- Custom CSS -->
+      <link href="{% static 'css/bootstrap_crispy_override.css' %}" rel="stylesheet">
+
+      <!-- Bootstrap 5 JS -->
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    {% endif %}
+    
+    <!-- Chart.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+
+  <body class="bg-gray-50 flex flex-col min-h-screen">
+
+    <!-- navbar -->
+    <nav class="bg-white shadow-md py-4 px-6 flex items-center justify-between sticky top-0 z-50" dir="{{ layout.dir }}">
+      <!-- Right side: Logo and Navigation Links -->
+      <div class="flex items-center {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %} space-x-6">
+        <!-- Logo -->
+        <div class="text-2xl font-bold text-pink-500">SkInsight</div>
+        
+        <!-- Navigation Links -->
+        <div class="hidden md:flex {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %} space-x-4 text-gray-700">
+          <a href="{% url 'home' %}" class="hover:text-pink-500">{{ _("Homepage") }}</a>
+          <a href="{% url 'contact_us' %}" class="hover:text-pink-500">{{ _("Contact us") }}</a>
+        </div>
+      </div>
+
+      <!-- Left side: Profile + Dashboard + Logout -->
+      <div class="flex items-center {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %} gap-2">
+
+        <!-- Language Switcher Link -->
+        <form action="{% url 'set_language' %}" method="post" class="inline-block">
+          {% csrf_token %}
+          {% if LANGUAGE_CODE == 'en' %}
+            <input type="hidden" name="language" value="ar">
+            <button type="submit" class="text-sm text-gray-600 hover:text-pink-500 font-medium">العربية</button>
+          {% else %}
+            <input type="hidden" name="language" value="en">
+            <button type="submit" class="text-sm text-gray-600 hover:text-pink-500 font-medium">English</button>
+          {% endif %}
+        </form>
+        
+        <span> | </span>
+
+        <!-- User area -->
+        {% if user.is_authenticated %}
+          <!-- Profile Picture (static URL as requested) -->
+          <img src="https://i.pinimg.com/474x/b0/83/31/b0833156962d005d1ccbee648cba509b.jpg" 
+               alt="{{ _('Profile Picture') }}" 
+               class="w-10 h-10 rounded-full border border-gray-300">
+          <!-- Show logged-in user's username -->
+          <span class="text-gray-700 font-medium">{{ user.username }}</span> &nbsp;
+          <!-- Dashboard and Logout links -->
+          (
+          <a href="{% url 'dashboard_router' %}" class="text-gray-700 hover:text-pink-500 font-medium mx-0">{{ _("Dashboard") }}</a>
+          <span>|</span>
+          <a href="{% url 'account_logout' %}" class="text-gray-700 hover:text-pink-500 font-medium mx-0">{{ _("Logout") }}</a>
+          )
+        {% else %}
+          <!-- If not logged in, show only Login link -->
+          <a href="{% url 'auth' %}" class="text-gray-700 hover:text-pink-500 font-medium">{{ _("Login") }}</a>
+        {% endif %}
+        <!-- / User area -->
+         
+      </div>
+
+    </nav>
+
+    <!-- Main content -->
+    <main class="flex-grow max-w-screen px-4 sm:px-6 lg:px-8 py-8">
+
+      <!-- Content Block -->
+      <div class="flex items-center justify-center bg-gray-50 p-4">
+        <div class="bg-white rounded-xl shadow-md w-full max-w-7xl mx-auto mt-10 space-y-8 p-8">
+
+          <!-- System Messages -->
+          {% if messages %}
+            <div class="w-full max-w-2xl mx-auto mt-4 px-4">
+              <ul class="space-y-3">
+                {% for message in messages %}
+                  <li class="rounded-lg px-4 py-3 text-sm font-medium
+                            {% if message.tags == 'error' %}
+                              bg-red-100 text-red-800
+                            {% elif message.tags == 'success' %}
+                              bg-green-100 text-green-800
+                            {% elif message.tags == 'warning' %}
+                              bg-yellow-100 text-yellow-800
+                            {% else %}
+                              bg-blue-100 text-blue-800
+                            {% endif %}">
+                    {{ message }}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+          <!-- / System Messages-->
+          
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+
+
+    </main>
+
+    <!-- Footer --> 
+    <footer class="w-full bg-gray-200 py-4 px-6 text-center text-sm text-gray-700 mt-auto">
+      <div>
+        جميع الحقوق محفوظة -
+        Healthcare Solutions |
+        <a href="https://www.captaincto.com" class="font-semibold hover:underline" target="_blank" rel="noopener noreferrer">
+          Captain CTO 
+        </a>
+        &reg;&nbsp;
+        <span id="footerCurrentYear"></span>
+      </div>
+    </footer>
+
+
+    <script>
+      // Show current year in footer
+      document.getElementById('footerCurrentYear').textContent = new Date().getFullYear();
+    </script>
+
+  </body>
+</html>

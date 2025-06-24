@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load i18n static %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block title %}
+{{ _("Dashboard") }}
+{% endblock %}
+
+{% block content %}
+
+{% comment %}
+<!-- row 1 -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+    <!-- col 1 -->
+    <div class="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg transition">
+        <h3 class="text-pink-500 text-lg font-bold mb-4">title</h3>
+        
+    </div>
+    <!-- / col 1 -->
+
+    <!-- col 2 -->
+    <div class="bg-gray-50 p-6 rounded-xl shadow hover:shadow-lg transition md:col-span-2">
+        <h3 class="text-pink-500 text-lg font-bold mb-4">title</h3>
+    </div>
+
+</div>
+{% endcomment %}
+
+<!-- Clients data table -->
+<div class="w-full bg-white shadow-md rounded-lg max-w-6xl mx-auto m-8 p-8" dir="{{ layout.dir }}">
+    <h1 class="text-3xl text-center font-bold mb-6">Clients Data</h1>
+
+    <!-- Search Field -->
+    <div class="mb-4 relative max-w-md">
+        <input id="clientsSearchInput" type="text" placeholder="Search by name or birthdate"
+            class="w-full border border-gray-300 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-400">
+        <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400 pointer-events-none" fill="currentColor"
+            viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                d="M8 4a4 4 0 013.874 5.014 5.5 5.5 0 11-1.41-1.41A4 4 0 018 4zm-5.5 8a5.5 5.5 0 119.546 3.917l4.519 4.52a1 1 0 01-1.414 1.414l-4.52-4.519A5.5 5.5 0 012.5 12z"
+                clip-rule="evenodd" />
+        </svg>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto rounded-lg shadow">
+        <table class="min-w-full bg-white divide-y divide-gray-200 {{ layout.text_align_cls }}">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Full name") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Gender") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Birth Date") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Active?") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Operations") }}</th>
+                </tr>
+            </thead>
+            <tbody id="clientsDataBody" class="divide-y divide-gray-100">
+                <!-- Populated by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6 flex justify-center space-x-2 {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %}" dir="{{layout.dir}}">
+        <button id="clientsPaginationPrevBtn"
+            class="px-3 py-1 rounded-full bg-pink-100 hover:bg-pink-400 hover:text-white text-pink-600 text-sm">Prev</button>
+        <button id="clientsPaginationNextBtn"
+            class="px-3 py-1 rounded-full bg-pink-100 hover:bg-pink-400 hover:text-white text-pink-600 text-sm">Next</button>
+    </div>
+</div>
+
+
+
+
+<!-- Professionals data table -->
+<div class="w-full bg-gray-50 shadow-md rounded-lg max-w-7xl mx-auto m-8 p-8" dir="{{layout.dir}}">
+    <h1 class="text-3xl text-center font-bold mb-6">{{ _("Professionals Table") }}</h1>
+
+    <!-- Create new -->
+    <div class="mb-4">
+        <a href="{% url 'create_professional' %}"
+            class="inline-block bg-pink-500 text-white px-4 py-2 rounded-full hover:bg-pink-600 transition">
+            + {{ _("Create New Professional") }}
+        </a>
+    </div>
+
+    <!-- Search Field -->
+    <div class="mb-4 relative max-w-md">
+        <input id="professionalsSearchInput" type="text" placeholder="Search by name or organization"
+            class="w-full border border-gray-300 rounded-full py-2 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-pink-400">
+        <svg class="absolute right-3 top-2.5 w-5 h-5 text-gray-400 pointer-events-none" fill="currentColor"
+            viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+                d="M8 4a4 4 0 013.874 5.014 5.5 5.5 0 11-1.41-1.41A4 4 0 018 4zm-5.5 8a5.5 5.5 0 119.546 3.917l4.519 4.52a1 1 0 01-1.414 1.414l-4.52-4.519A5.5 5.5 0 012.5 12z"
+                clip-rule="evenodd" />
+        </svg>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto rounded-lg shadow">
+        <table class="min-w-full bg-white divide-y divide-gray-200 {{ layout.text_align_cls }}">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Full name") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Gender") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Organization name") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Organization City") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Organization Country") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Active?") }}</th>
+                    <th class="px-6 py-3 text-sm font-medium text-gray-600">{{ _("Operations") }}</th>
+                </tr>
+            </thead>
+            <tbody id="professionalsDataBody" class="divide-y divide-gray-100">
+                <!-- Populated by JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="mt-6 flex justify-center space-x-2 {% if LANGUAGE_CODE == 'ar' %} space-x-reverse {% endif %}" dir="{{layout.dir}}">
+        <button id="professionalsPaginationPrevBtn"
+            class="px-3 py-1 rounded-full bg-pink-100 hover:bg-pink-400 hover:text-white text-pink-600 text-sm">Prev</button>
+        <button id="professionalsPaginationNextBtn"
+            class="px-3 py-1 rounded-full bg-pink-100 hover:bg-pink-400 hover:text-white text-pink-600 text-sm">Next</button>
+    </div>
+</div>
+
+
+<!-- Use this to pass data to js script. json_script is important against attacks -->
+{{ clients_table_data|json_script:"clients-tbl-data" }} 
+
+<!-- Use this to pass data to js script. json_script is important against attacks -->
+{{ practitioners_table_data|json_script:"practitioners-tbl-data" }} 
+
+
+<script defer src="{% static 'js/admin_dashboard.js' %}"></script>
+
+{% endblock %}

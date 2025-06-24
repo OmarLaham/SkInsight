@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load i18n static socialaccount %}
+
+{% get_current_language as LANGUAGE_CODE %}
+{% comment %} Load layour vars from app/tempaltetags/i18n_tags.py as layout {% endcomment %}
+{% load i18n_tags %}
+{% i18n_layout as layout %}
+
+{% block title %}
+{{ _("Login") }}
+{% endblock %}
+
+
+{% block content %}
+
+<!-- OAuth2 Authentication -->
+<div class="flex items-center justify-center h-[calc(100vh-24rem)] bg-gray-50 p-4" dir="{{ layout.dir }}">
+    <div class="bg-white p-6 rounded-xl shadow-lg w-full max-w-sm space-y-6 text-center">
+        <!-- Tab Buttons -->
+        <div class="flex justify-center gap-4 mb-4">
+            <button id="signInTab" class="tab-button font-bold text-pink-600 border-b-2 border-pink-600 pb-1">{{ _("Sign In") }}</button>
+            <button id="signUpTab" class="tab-button text-gray-600 hover:text-pink-600 pb-1">{{ _("Sign Up") }}</button>
+        </div>
+
+        <!-- Sign In Content -->
+        <div id="signInContent" class="tab-content space-y-4">
+            <h2 class="text-xl font-bold text-pink-500">{{ _("Sign In") }}</h2>
+            <!-- <p class="text-gray-600">اختر طريقة الدخول</p> -->
+
+            <!-- Google Login -->
+            <a href="{% provider_login_url 'google' %}">
+                <button onclick="loginWithGoogle()"
+                    class="w-full flex items-center justify-center gap-3 bg-white text-gray-700 border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-100 transition">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5" />
+                    {{ _("Continue with Google") }}
+                </button>
+            </a>
+
+            <!-- Facebook Login -->
+            <!-- <button onclick="loginWithFacebook()"
+                class="w-full flex items-center justify-center gap-3 bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                    alt="Facebook" class="w-5 h-5" />
+                الدخول باستخدام Facebook
+            </button> -->
+
+            <p class="text-sm text-gray-500 mt-2">
+                {{ _("No Account Yet?") }}
+                <a href="#" id="switchToSignUp" class="text-pink-600 hover:underline">{{ _("Sign Up") }}</a>
+            </p>
+        </div>
+
+        <!-- Sign Up Content -->
+        <div id="signUpContent" class="tab-content hidden space-y-4">
+            <h2 class="text-xl font-bold text-pink-500">{{ _("Sign Up") }}</h2>
+            <!-- <p class="text-gray-600">اختر طريقة التسجيل</p> -->
+
+            <p class="text-lg mt-4 mb-4 text-center">{{_("For sign up, please")}} <a class="underline" href="{% url 'contact_us' %}">{{_("contact us")}}</a></p>
+            {% comment %}
+            <!-- Google Sign Up -->
+            <a href="{% provider_login_url 'google' %}">
+                <button onclick="loginWithGoogle()"
+                    class="w-full flex items-center justify-center gap-3 bg-white text-gray-700 border border-gray-300 rounded-lg px-4 py-2 hover:bg-gray-100 transition">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5" />
+                    {{ _("Continue with Google") }}
+                </button>
+            </a>
+
+            <!-- Facebook Sign Up -->
+            <!-- <button onclick="loginWithFacebook()"
+                class="w-full flex items-center justify-center gap-3 bg-blue-600 text-white rounded-lg px-4 py-2 hover:bg-blue-700 transition">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
+                    alt="Facebook" class="w-5 h-5" />
+                التسجيل باستخدام Facebook
+            </button> -->
+            {% endcomment %}
+
+            <p class="text-sm text-gray-500 mt-2">
+                {{ _("Already Have Account?") }}
+                <a href="#" id="switchToSignIn" class="text-pink-600 hover:underline">{{ _("Sign In") }}</a>
+            </p>
+        </div>
+    </div>
+</div>
+<!-- / OAuth2 Authentication -->
+
+<script src="{% static 'js/auth.js' %}"></script>
+
+{% endblock %}
