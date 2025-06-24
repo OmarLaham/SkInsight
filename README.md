@@ -29,6 +29,7 @@ SkInsight is a smart, Azure-hosted web application that enables dermatology clin
 - 🧴 **Product Recommendation Engine**: Aggregates skin progress over sessions to recommend skincare products through monetized and clinically approved APIs.
 - 📂 **Structured Metadata**: Store and view structured data for users and clinical interactions in FHIR-compliant format.
 - 🧪 **MVP-Ready**: Clean UI, easily extendable, and ready for user feedback.
+- 💬 **Internationalization (i18n)**: Built-in support for English (LTR) and Arabic (RTL) layouts with automatic direction handling
 
 
 <br/>
